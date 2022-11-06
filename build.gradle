@@ -1,0 +1,49 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.3'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+    id 'java'
+    id 'war'
+    id "io.freefair.lombok" version "6.5.0-rc1"
+}
+
+group 'ru.clevertec'
+version '1.0-SNAPSHOT'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+}
+
+ext.versions = [
+        'mapStruct': '1.5.2.Final'
+]
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.liquibase:liquibase-core'
+
+    annotationProcessor "org.mapstruct:mapstruct-processor:${versions.mapStruct}"
+    implementation "org.mapstruct:mapstruct:${versions.mapStruct}"
+    implementation 'org.hibernate.validator:hibernate-validator:7.0.5.Final'
+
+
+    testImplementation "org.mapstruct:mapstruct-processor:${versions.mapStruct}"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+compileJava {
+    options.compilerArgs = [
+            '-Amapstruct.defaultComponentModel=spring'
+    ]
+}
+
+test {
+    useJUnitPlatform()
+}
+
+//tasks.named('test') {
+//    useJUnitPlatform()
+//}
